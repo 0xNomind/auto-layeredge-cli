@@ -25,12 +25,6 @@ echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> $HOME/.bashrc
 echo 'export PATH="$(npm root -g)/pm2/bin:$PATH"' >> $HOME/.bashrc
 source $HOME/.bashrc
 
-# Install Rust
-echo "Installing Rust..."
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-echo 'source "$HOME/.cargo/env"' >> $HOME/.bashrc
-source $HOME/.bashrc
-
 # Install Go
 echo "Installing Go..."
 curl -L https://go.dev/dl/go1.22.4.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
