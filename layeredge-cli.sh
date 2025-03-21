@@ -28,16 +28,18 @@ source $HOME/.bashrc
 
 # Install Go
 echo "Installing Go..."
-curl -L https://go.dev/dl/go1.22.4.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+curl -L https://go.dev/dl/go1.22.4.linux-amd64.tar.gz -o go.tar.gz
+sudo rm -rf /usr/local/go
+sudo tar -xzf go.tar.gz -C /usr/local
+rm go.tar.gz
 echo 'export GOROOT=/usr/local/go' >> $HOME/.bashrc
 echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
-echo 'export PATH=$PATH:$GOROOT/bin:$GOPATH/bin' >> $HOME/.bashrc
+echo 'export PATH=$GOROOT/bin:$GOPATH/bin:$PATH' >> $HOME/.bashrc
 source $HOME/.bashrc
-exec bash  # Restart the shell to apply changes
 
 # Verify Go installation
 if ! command -v go &> /dev/null; then
-    echo "Go installation not found. Try running 'source ~/.bashrc' and 'go version' manually."
+    echo "Go installation failed. Try running 'source ~/.bashrc' and 'go version' manually."
     exit 1
 fi
 go version
