@@ -2,40 +2,31 @@
 
 set -e
 
-# Install NVM
-echo "Installing NVM..."
+# Download and install nvm:
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
-echo 'export NVM_DIR="$HOME/.nvm"' >> $HOME/.bashrc
-echo '[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"' >> $HOME/.bashrc
-echo '[ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"' >> $HOME/.bashrc
-source $HOME/.bashrc
 
-# Install Node.js
-echo "Installing Node.js..."
+# in lieu of restarting the shell
+\. "$HOME/.nvm/nvm.sh"
+
+# Download and install Node.js:
 nvm install 22
 
-# Verify installation
-echo "Verifying Node.js and npm versions..."
-node -v
-npm -v
+# Verify the Node.js version:
+node -v # Should print "v22.14.0".
+nvm current # Should print "v22.14.0".
+
+# Verify npm version:
+npm -v # Should print "10.9.2".
 
 # Install PM2
-echo "Installing PM2..."
 npm i -g pm2
-echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> $HOME/.bashrc
-echo 'export PATH="$(npm root -g)/pm2/bin:$PATH"' >> $HOME/.bashrc
-source $HOME/.bashrc
 
 # Install Go
-echo "Installing Go..."
-curl -L https://go.dev/dl/go1.22.4.linux-amd64.tar.gz -o go.tar.gz
-sudo rm -rf /usr/local/go
-sudo tar -xzf go.tar.gz -C /usr/local
-rm go.tar.gz
-echo 'export GOROOT=/usr/local/go' >> $HOME/.bashrc
-echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
-echo 'export PATH=$GOROOT/bin:$GOPATH/bin:$PATH' >> $HOME/.bashrc
-source $HOME/.bashrc
+curl -L https://go.dev/dl/go1.22.4.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bash_profile
+echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> $HOME/.bash_profile
+source .bash_profile
+go version
 
 # Verify Go installation
 if ! command -v go &> /dev/null; then
