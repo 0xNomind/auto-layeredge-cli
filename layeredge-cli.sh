@@ -5,9 +5,10 @@ set -e
 # Install NVM
 echo "Installing NVM..."
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+echo 'export NVM_DIR="$HOME/.nvm"' >> $HOME/.bashrc
+echo '[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"' >> $HOME/.bashrc
+echo '[ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"' >> $HOME/.bashrc
+source $HOME/.bashrc
 
 # Install Node.js
 echo "Installing Node.js..."
@@ -28,10 +29,11 @@ source $HOME/.bashrc
 # Install Go
 echo "Installing Go..."
 curl -L https://go.dev/dl/go1.22.4.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
-echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bashrc
-echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> $HOME/.bashrc
+echo 'export GOROOT=/usr/local/go' >> $HOME/.bashrc
+echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
+echo 'export PATH=$PATH:$GOROOT/bin:$GOPATH/bin' >> $HOME/.bashrc
 source $HOME/.bashrc
-go version
+go version || echo "Go installation not found. Try restarting the shell and running 'go version' manually."
 
 # Clone Repository
 echo "Cloning Light Node repository..."
