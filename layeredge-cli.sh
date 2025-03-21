@@ -33,7 +33,14 @@ echo 'export GOROOT=/usr/local/go' >> $HOME/.bashrc
 echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
 echo 'export PATH=$PATH:$GOROOT/bin:$GOPATH/bin' >> $HOME/.bashrc
 source $HOME/.bashrc
-go version || echo "Go installation not found. Try restarting the shell and running 'go version' manually."
+exec bash  # Restart the shell to apply changes
+
+# Verify Go installation
+if ! command -v go &> /dev/null; then
+    echo "Go installation not found. Try running 'source ~/.bashrc' and 'go version' manually."
+    exit 1
+fi
+go version
 
 # Clone Repository
 echo "Cloning Light Node repository..."
